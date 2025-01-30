@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="min_points" default="100"/>
+  <arg name="epsilon" default="0.5"/>
+  <arg name="hz" default="10"/>
+
+  <node pkg="dbscan" type="dbscan_node" name="dbscan" output="screen">
+    <param name="min_points" value="$(arg min_points)"/>
+    <param name="epsilon" value="$(arg epsilon)"/>
+    <param name="hz" value="$(arg hz)"/>
+  </node>
+</launch>

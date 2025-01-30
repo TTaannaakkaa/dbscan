@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="pcdfile" default="$(env HOME)/bagfiles/1728193268939728.pcd"/>
+  <arg name="rviz_config" default="$(find dbscan)/config/debug_with_pcd.rviz"/>
+
+  <node pkg="pcl_ros" type="pcd_to_pointcloud" name="pcd_to_pointcloud" args="$(arg pcdfile)">
+    <param name="frame_id" value="map"/>
+    <param name="latch" value="true"/>
+    <remap from="/cloud_pcd" to="/map_cloud"/>
+  </node>
+  <node pkg="amsl_navigation_utils" type="map_cloud_downsampler" name="map_cloud_downsampler" respawn="true">
+    <param name="leaf_size" value="0.32"/>
+  </node>
+  <node pkg="dbscan" type="ground_removal" name="ground_removal" output="screen"/>
+
+  <include file="$(find dbscan)/launch/dbscan.launch">
+    <arg name="min_points" value="100"/>
+    <arg name="epsilon" value="0.5"/>
+    <arg name="hz" value="10"/>
+  </include>
+
+  <node pkg="rviz" type="rviz" name="rviz" args="-d $(arg rviz_config)" required="true"/>
+</launch>

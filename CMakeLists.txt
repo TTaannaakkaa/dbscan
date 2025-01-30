@@ -9,6 +9,7 @@ project(dbscan)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
   roscpp
+  pcl_ros
   sensor_msgs
   std_msgs
   visualization_msgs
@@ -119,7 +120,8 @@ catkin_package(
 include_directories(include ${catkin_INCLUDE_DIRS})
 
 ## Declare a C++ library
-add_library(${PROJECT_NAME} src/${PROJECT_NAME}/dbscan.cpp)
+add_library(${PROJECT_NAME} src/dbscan.cpp)
+# add_library(${PROJECT_NAME} src/ground_removal.cpp)
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
@@ -130,6 +132,7 @@ add_library(${PROJECT_NAME} src/${PROJECT_NAME}/dbscan.cpp)
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
 add_executable(${PROJECT_NAME}_node src/dbscan_node.cpp)
+add_executable(ground_removal src/ground_removal.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -140,9 +143,11 @@ add_executable(${PROJECT_NAME}_node src/dbscan_node.cpp)
 ## Add cmake target dependencies of the executable
 ## same as for the library above
 add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(ground_removal ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
 target_link_libraries(${PROJECT_NAME}_node ${PROJECT_NAME} ${catkin_LIBRARIES})
+target_link_libraries(ground_removal ${PROJECT_NAME} ${catkin_LIBRARIES})
 
 #############
 ## Install ##

@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="bagfile" default="$(env HOME)/bagfiles/record_run_2024-10-06.bag"/>
+  <arg name="speed" default="1.0"/>
+  <arg name="time" default="0.0"/>
+
+  <include file="$(find dbscan)/launch/dbscan.launch">
+    <arg name="min_points" value="100"/>
+    <arg name="epsilon" value="0.5"/>
+    <arg name="hz" value="10"/>
+  </include>
+
+  <include file="$(find velodyne_pointcloud)/launch/VLP-32C_points.launch"/>
+  <node pkg="dbscan" type="ground_removal" name="ground_removal" output="screen"/>
+    
+
+  <node pkg="rosbag" type="play" name="bagplay" args="$(arg bagfile)"/>
+  <node pkg="rviz" type="rviz" name="rviz"/>
+</launch>
+
