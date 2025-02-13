@@ -7,9 +7,11 @@ project(dbscan)
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
+find_package(Open3D REQUIRED)
 find_package(catkin REQUIRED COMPONENTS
   roscpp
   pcl_ros
+  pcl_conversions
   sensor_msgs
   std_msgs
   visualization_msgs
@@ -105,8 +107,8 @@ find_package(catkin REQUIRED COMPONENTS
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-#  INCLUDE_DIRS include
-#  LIBRARIES dbscan
+ INCLUDE_DIRS include
+ LIBRARIES dbscan
 #  CATKIN_DEPENDS roscpp sensor_msgs std_msgs visualization_msgs
 #  DEPENDS system_lib
 )
@@ -117,7 +119,7 @@ catkin_package(
 
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
-include_directories(include ${catkin_INCLUDE_DIRS})
+include_directories(include ${catkin_INCLUDE_DIRS} ${PCL_INCLUDE_DIRS} ${Open3D_INCLUDE_DIRS})
 
 ## Declare a C++ library
 add_library(${PROJECT_NAME} src/dbscan.cpp)
@@ -133,6 +135,8 @@ add_library(${PROJECT_NAME} src/dbscan.cpp)
 ## The recommended prefix ensures that target names across packages don't collide
 add_executable(${PROJECT_NAME}_node src/dbscan_node.cpp)
 add_executable(ground_removal src/ground_removal.cpp)
+add_executable(dbscan_pcl src/dbscan_pcl.cpp)
+add_executable(dbscan_open3d src/dbscan_open3d.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -144,10 +148,14 @@ add_executable(ground_removal src/ground_removal.cpp)
 ## same as for the library above
 add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 add_dependencies(ground_removal ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(dbscan_pcl ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(dbscan_open3d ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
 target_link_libraries(${PROJECT_NAME}_node ${PROJECT_NAME} ${catkin_LIBRARIES})
 target_link_libraries(ground_removal ${PROJECT_NAME} ${catkin_LIBRARIES})
+target_link_libraries(dbscan_pcl ${PROJECT_NAME} ${catkin_LIBRARIES})
+target_link_libraries(dbscan_open3d ${PROJECT_NAME} ${catkin_LIBRARIES} ${Open3D_LIBRARIES})
 
 #############
 ## Install ##

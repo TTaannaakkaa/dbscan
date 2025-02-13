@@ -22,7 +22,7 @@ void cloud_callback(const sensor_msgs::PointCloud2ConstPtr& input_msg)
     seg.setOptimizeCoefficients(true);
     seg.setModelType(pcl::SACMODEL_PLANE);
     seg.setMethodType(pcl::SAC_RANSAC);
-    seg.setDistanceThreshold(0.3); // 地面とみなす距離の閾値（調整可能）
+    seg.setDistanceThreshold(0.25); // 地面とみなす距離の閾値（調整可能）
     seg.setInputCloud(cloud);
 
     pcl::ModelCoefficients::Ptr coefficients(new pcl::ModelCoefficients);
@@ -75,7 +75,7 @@ int main(int argc, char** argv) {
     pub_filtered = nh.advertise<sensor_msgs::PointCloud2>("/filtered_points", 1);
 
     // 毎週パブリッシュするためのタイマーを設定
-    ros::Timer timer = nh.createTimer(ros::Duration(1.0), publish_latest_filtered_cloud); // 1週間 = 7日 * 24時間 * 60分 * 60秒
+    ros::Timer timer = nh.createTimer(ros::Duration(0.1), publish_latest_filtered_cloud); // 1週間 = 7日 * 24時間 * 60分 * 60秒
 
     ros::spin();
     return 0;
