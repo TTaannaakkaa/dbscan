@@ -8,15 +8,12 @@
     <param name="latch" value="true"/>
     <remap from="/cloud_pcd" to="/map_cloud"/>
   </node>
-  <node pkg="amsl_navigation_utils" type="map_cloud_downsampler" name="map_cloud_downsampler" respawn="true">
-    <param name="leaf_size" value="0.32"/>
-  </node>
   <node pkg="dbscan" type="ground_removal" name="ground_removal" output="screen"/>
 
-  <include file="$(find dbscan)/launch/dbscan.launch">
-    <arg name="min_points" value="100"/>
-    <arg name="epsilon" value="0.5"/>
-    <arg name="hz" value="10"/>
+  <!-- <include file="$(find dbscan)/launch/dbscan_open3d.launch"> -->
+  <include file="$(find dbscan)/launch/dbscan_pcl.launch">
+    <arg name="minPts" value="10"/>
+    <arg name="epsilon" value="1.0"/>
   </include>
 
   <node pkg="rviz" type="rviz" name="rviz" args="-d $(arg rviz_config)" required="true"/>

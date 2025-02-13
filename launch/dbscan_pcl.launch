@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="minPts" default="10"/>
+  <arg name="epsilon" default="1.0"/>
+
+  <node pkg="dbscan" type="dbscan_pcl" name="dbscan_pcl" output="screen">
+    <param name="minPts" value="$(arg minPts)"/>
+    <param name="epsilon" value="$(arg epsilon)"/>
+  </node>
+</launch>

@@ -9,7 +9,7 @@ DBSCAN::DBSCAN() : private_nh_("~")
   private_nh_.param<double>("x_min", x_min_, -5.0);
   private_nh_.param<double>("x_max", x_max_, 5.0);
   private_nh_.param<double>("y_min", y_min_, -5.0);
-  private_nh_.param<double>("y_max", y_max_, 5.0);
+  private_nh_.param<double>("y_max", y_max_, 6.0);
   private_nh_.param<int>("hz", hz_, 10);
 
   // pointcloud_sub_ = nh_.subscribe<sensor_msgs::PointCloud2>("/velodyne_points", 1, &DBSCAN::pointcloud_callback, this);
